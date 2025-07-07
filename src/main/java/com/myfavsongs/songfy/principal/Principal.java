@@ -1,8 +1,12 @@
 package com.myfavsongs.songfy.principal;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.myfavsongs.songfy.model.dto.DeezerResponseDto;
+import com.myfavsongs.songfy.model.dto.SongDto;
 import com.myfavsongs.songfy.service.Converter;
 import com.myfavsongs.songfy.service.DeezerApi;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Principal {
@@ -17,6 +21,9 @@ public class Principal {
                 songToSearch.replaceAll(" ", "+") :
                 songToSearch;
         String json = DeezerApi.getData(BASE_URL+songToSearch);
-        System.out.println(json);
+        DeezerResponseDto deezerResponse = converter.getData(json, DeezerResponseDto.class);
+        deezerResponse.songDtoList().forEach(System.out::println);
     }
+
+    //public void getSongData()
 }
