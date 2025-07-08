@@ -1,6 +1,5 @@
 package com.myfavsongs.songfy.principal;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.myfavsongs.songfy.model.Artist;
 import com.myfavsongs.songfy.model.Song;
 import com.myfavsongs.songfy.model.dto.DeezerResponseDto;
@@ -33,6 +32,10 @@ public class Principal {
                 1. Register a song
                 2. List all songs
                 3. List all songs by given artist
+                4. Find songs containing given name
+                5. Find Songs with duration between values
+                6. Number of songs per artist
+                7. Songs sorted by rank
                 """;
         int option = -1;
 
@@ -52,14 +55,60 @@ public class Principal {
                 break;
                 case 2:
                     listAllSongs();
+                    break;
                 case 3:
                     listAllSongsByGivenArtist();
+                break;
+                case 4:
+                    getSongByName();
+                break;
+                case 5:
+                    getSongsBetweenDuration();
+                break;
+                case 6:
+                    numberOfSongsByArtist();
+                break;
+                case 7:
+                    sortSongsByRank();
                 break;
                 default:
                     System.out.println("Invalid option!");
             }
         }
 
+    }
+
+    private void sortSongsByRank() {
+        System.out.println("GLOBAL ORDER: ");
+        List<Song> songs = songRepository.findByOrderByRankDesc();
+        songs.forEach(s -> System.out.println(s.getTitle()+" - #"+s.getRank()));
+    }
+
+    private void numberOfSongsByArtist() {
+        System.out.println("Enter artist's name: ");
+        String name = reader.nextLine();
+        Long total = songRepository.countByArtist(name);
+        System.out.println("Total number of songs by the artist: "+total);
+    }
+
+    private void getSongsBetweenDuration() {
+        System.out.println("Enter minimum duration (minutes): ");
+        int min = Integer.parseInt(reader.nextLine());
+        System.out.println("Enter maximum duration (minutes): ");
+        int max = Integer.parseInt(reader.nextLine());
+        List<Song> songs = songRepository.findByDurationBetween((min*60), (max*60));
+        songs.forEach(s -> System.out.println(s.getTitle() + " - "+(s.getDuration()/60)+"min"));
+    }
+
+    private void getSongByName() {
+        System.out.println("Enter song's name: ");
+        String name = reader.nextLine();
+        Optional<Song> song = songRepository.findByTitleContainingIgnoreCase(name);
+        if(song.isPresent()){
+            System.out.println(song.get());
+        }else{
+            System.out.println("This song was not add to your list.");
+        }
     }
 
     private void listAllSongsByGivenArtist() {
