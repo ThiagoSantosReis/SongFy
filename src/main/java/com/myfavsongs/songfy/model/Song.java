@@ -3,6 +3,8 @@ package com.myfavsongs.songfy.model;
 import com.myfavsongs.songfy.model.dto.SongDto;
 import jakarta.persistence.*;
 
+@Entity
+@Table(name = "song")
 public class Song {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
