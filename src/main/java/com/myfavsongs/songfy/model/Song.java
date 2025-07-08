@@ -1,13 +1,18 @@
 package com.myfavsongs.songfy.model;
 
 import com.myfavsongs.songfy.model.dto.SongDto;
+import jakarta.persistence.*;
 
 public class Song {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private Long duration;
     private Long rank;
     private Boolean explicit_lyrics;
+    @ManyToOne
+    @JoinColumn(name = "artist_id")
     private Artist artist;
 
     public Song(){}

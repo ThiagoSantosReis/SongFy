@@ -1,15 +1,19 @@
 package com.myfavsongs.songfy.model;
 
 import com.myfavsongs.songfy.model.dto.ArtistDto;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Artist {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String link;
     private String picture;
+    @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL)
     private List<Song> songs = new ArrayList<>();
 
     public Artist(){}

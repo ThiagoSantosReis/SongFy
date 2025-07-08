@@ -17,7 +17,7 @@ public class Principal {
     private final String BASE_URL = "https://api.deezer.com/search?q=";
 
     public void showMenu(){
-        
+        System.out.println(selectASong());
     }
 
     public void getSongData (){
@@ -39,6 +39,7 @@ public class Principal {
 
         System.out.println("Select song's index: ");
         int index = reader.nextInt();
+        index -=1;
 
         if(index < 0 || index > songDtos.size()){
             System.out.println("Invalid selection");
